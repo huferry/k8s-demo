@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dogs</title>
+</head>
+<body>
+    <span>Server ID: </span><span id="serverId"></span>
+    <br>
+    <img src="candy.jpeg"  alt="Candy"/>
+</body>
+<script>
+    fetch('/api/id').then(response => {
+        response.text().then(id =>
+            document.getElementById('serverId').innerText = id
+        )
+    })
+</script>
+</html>
