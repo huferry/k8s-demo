@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dog-app-demo
+  labels:
+    app: dog-app
+spec:
+  containers:
+    - name: dog-website
+      image: huferry/dog-website:1.0.0
+      ports:
+        - containerPort: 3000
