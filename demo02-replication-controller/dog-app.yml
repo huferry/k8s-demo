@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: dog-app-demo
+spec:
+  replicas: 2
+  selector:
+    app: dog-app
+  template:
+    metadata:
+      labels:
+        app: dog-app
+    spec:
+      containers:
+        - name: dog-website
+          image: huferry/dog-website:1.0.0
+          ports:
+            - name: nodejs-port
+              containerPort: 3000
