@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quotefeeder-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quotefeeder
+  template:
+    metadata:
+      labels:
+        app: quotefeeder
+    spec:
+      containers:
+      - name: quotefeeder-container
+        image: huferry/quote-feeder:latest
+        env:
+        - name: QUEUE_HOST
+          value: quotes-amqp-service
+        - name: QUEUE_USER
+          value: quotes.user
+        - name: QUEUE_PASSWORD
+          value: $3cret
