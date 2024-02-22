@@ -3,8 +3,10 @@ using QuoteFeeder;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        services.AddSingleton<Instrument[]>(provider => Instrument.ReadFromJson("./aex.json").ToArray());
+        services.AddSingleton<Instrument[]>(_ => Instrument.ReadFromJson("./aex.json").ToArray());
         services.AddHostedService<Worker>();
+        services.AddSingleton<Sender, Sender>();
+        services.AddSingleton<QueueConfig, QueueConfig>();
     })
     .Build();
 
