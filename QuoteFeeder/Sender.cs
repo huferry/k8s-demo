@@ -16,6 +16,7 @@ public class Sender
     private readonly ILogger<Sender> _logger;
     private IModel? _channel;
     private readonly QueueConfig _config;
+    private IBasicProperties? _properties;
 
     public Sender(ILogger<Sender> logger, QueueConfig config)
     {
@@ -33,13 +34,10 @@ public class Sender
         };
         var conn = factory.CreateConnection();
         _channel = conn.CreateModel();
+        _channel.ExchangeDeclare("quote-feed", ExchangeType.Fanout, false, true, null);
 
-        _channel.QueueDeclare(
-            queue: "quote-feed",
-            durable: true,
-            exclusive: false,
-            autoDelete: true,
-            arguments: null);
+        _properties = _channel.CreateBasicProperties();
+        _properties.Persistent = false;
     }
 
     public void Publish(Instrument instrument)
@@ -51,12 +49,7 @@ public class Sender
         }
 
         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(instrument));
-        
-        _channel.BasicPublish
-        (
-            exchange: string.Empty,
-            routingKey: "quote-feed",
-            basicProperties: null,
-            body: body);
+
+        _channel.BasicPublish("quote-feed", string.Empty, _properties, body);
     }
 }
