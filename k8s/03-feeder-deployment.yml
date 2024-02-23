@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: quotefeeder-container
-        image: huferry/quote-feeder:3
+        image: huferry/quote-feeder:1
         env:
         - name: QUEUE_HOST
           value: quotes-amqp-service
