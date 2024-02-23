@@ -1,0 +1,54 @@
+﻿@using System.Text.Json
+@{
+    ViewData["Title"] = "Home Page";
+
+    var instruments = JsonSerializer.Deserialize<Instrument[]>(File.ReadAllText("aex.json"))!;
+    Console.WriteLine(instruments);
+    
+}
+
+<style>
+    table caption {
+        margin-top: 10px;
+        font-size: 0.7em;
+    }
+    
+    td.name {
+    
+    }
+    
+    .green {
+        background-color: mediumseagreen;
+    }
+    
+    .red {
+        background-color: indianred;
+    }
+</style>
+
+<div>
+    <table class="table">
+        <caption>AEX Stock Prices</caption>
+        <tr>
+            <th>Stock Name</th>
+            <th>Last</th>
+            <th>Time</th>
+            <th>Volume</th>
+            <th>Open</th>
+            <th>Low</th>
+            <th>High</th>
+        </tr>
+        @foreach (var instrument in instruments)
+        {
+            <tr id="@instrument.Symbol" class="instrument">
+                <td class="name">@instrument.Name</td>
+                <td class="last price" id="@("last_" + instrument.Symbol)">&nbsp;</td>
+                <td class="lastTimestamp" id="@("lastTimestamp_" + instrument.Symbol)">&nbsp;</td>
+                <td class="volume price" id="@("volume_" + instrument.Symbol)">&nbsp;</td>
+                <td class="open price" id="@("open_" + instrument.Symbol)">&nbsp;</td>
+                <td class="low price" id="@("low_" + instrument.Symbol)">&nbsp;</td>
+                <td class="high price" id="@("high_" + instrument.Symbol)">&nbsp;</td>
+            </tr>
+        }
+    </table>
+</div>
