@@ -6,12 +6,13 @@ function update(instrument) {
     const selector = column => `#${column}_${instrument.symbol}`
     const cell = column => $(selector(column))
     
-    const columns = ['last', 'volume', 'open', 'low', 'high']
+    const columns = ['last', 'open', 'low', 'high']
     
     columns.forEach(column => {
-        cell(column).text(instrument.quotes[column])
+        cell(column).text(instrument.quotes[column].toFixed(2))
     })
     
+    cell('volume').text(instrument.quotes.volume)
     cell('lastTimestamp').text(new Date(instrument.quotes.lastTimestamp).toLocaleTimeString())
     
     const previous = cell('last').val() ?? 0.0
@@ -28,27 +29,23 @@ function update(instrument) {
         setTimeout(() => row.removeClass('red'), 700)
     }
 }
+function createConnection(token) {
+    return new signalR.HubConnectionBuilder()
+        .withUrl(`/stream`)
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+}
 
-update({
-    symbol: 'ABN',
-    quotes: {
-        last: 14.011,
-        lastTimestamp: "2024-02-23T11:54:08.00Z",
-        volume: 4221,
-        open: 15.112,
-        low: 13.889,
-        high: 16.891
+async function start(token, updateFn) {
+    const connection = createConnection(token)
+    try {
+        await connection.start();
+        console.log("SignalR Connected.");
+        connection.on('update', update)
+    } catch (err) {
+        console.log(err);
+        setTimeout(() => start(token), 5000);
     }
-})
+}
 
-update({
-    symbol: 'ABN',
-    quotes: {
-        last: 14.211,
-        lastTimestamp: "2024-02-23T11:54:10.00Z",
-        volume: 4221,
-        open: 15.112,
-        low: 13.889,
-        high: 16.891
-    }
-})
+start()

@@ -1,7 +1,11 @@
+using QuoteView;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<QuoteReceiver>();
 
 var app = builder.Build();
 
@@ -20,8 +24,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapHub<QuotesHub>("/stream");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+var receiver = app.Services.GetService<QuoteReceiver>()!;
+receiver.Setup();
 
 app.Run();

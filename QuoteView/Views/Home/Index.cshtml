@@ -2,7 +2,11 @@
 @{
     ViewData["Title"] = "Home Page";
 
-    var instruments = JsonSerializer.Deserialize<Instrument[]>(File.ReadAllText("aex.json"))!;
+    var instruments = JsonSerializer.Deserialize<InstrumentQuotes[]>(
+        File.ReadAllText("aex.json"), new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })!;
     Console.WriteLine(instruments);
     
 }
@@ -24,10 +28,22 @@
     .red {
         background-color: indianred;
     }
+    
+    .price {
+        text-align: right;
+    }
+    
+    .volume {
+        text-align: right;
+    }
+    
+    th {
+     text-align: center;
+    }
 </style>
 
 <div>
-    <table class="table">
+    <table class="table table-bordered">
         <caption>AEX Stock Prices</caption>
         <tr>
             <th>Stock Name</th>
@@ -42,12 +58,12 @@
         {
             <tr id="@instrument.Symbol" class="instrument">
                 <td class="name">@instrument.Name</td>
-                <td class="last price" id="@("last_" + instrument.Symbol)">&nbsp;</td>
-                <td class="lastTimestamp" id="@("lastTimestamp_" + instrument.Symbol)">&nbsp;</td>
-                <td class="volume price" id="@("volume_" + instrument.Symbol)">&nbsp;</td>
-                <td class="open price" id="@("open_" + instrument.Symbol)">&nbsp;</td>
-                <td class="low price" id="@("low_" + instrument.Symbol)">&nbsp;</td>
-                <td class="high price" id="@("high_" + instrument.Symbol)">&nbsp;</td>
+                <td class="last price" id="@("last_" + instrument.Symbol)">@instrument.Last</td>
+                <td class="lastTimestamp price" id="@("lastTimestamp_" + instrument.Symbol)">00:00:00</td>
+                <td class="volume" id="@("volume_" + instrument.Symbol)">1</td>
+                <td class="open price" id="@("open_" + instrument.Symbol)">@instrument.Last</td>
+                <td class="low price" id="@("low_" + instrument.Symbol)">@instrument.Last</td>
+                <td class="high price" id="@("high_" + instrument.Symbol)">@instrument.Last</td>
             </tr>
         }
     </table>
