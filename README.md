@@ -2,6 +2,8 @@
 
 This is a demonstration of the use of Kubernetes to setup a multi-layer application. 
 
+Tags: **#kubernetes**, **#k8s**, **#DOTNET**, **#C#**, **#RabbitMQ**, **#SignalR**, **#ASPNET**.
+
 ## 1. The Application
 As an example we are building an application that displays stock prices from the AEX Index (Amsterdam stock exchange). The application contains 3 parts.
 
@@ -65,6 +67,18 @@ minikube service quotes-amqp-service --url
 When the feeder is runing, the queue will be fed with quotes.
 ```
 kubectl create -f ./k8s/03-feeder-deployment.yml
+```
+
+**Create the viewer**
+If the feeder is running, the viewer can be deployed.
+```
+kubectl create -f ./k8s/04-view-deployment.yml
+```
+
+**Open the viewer on the browser**
+Run `minikube service` to expose the URL, then navigate to the URL.
+```
+minikube service quotes-view-service --url
 ```
 
 **Cleanups**
