@@ -34,7 +34,7 @@ public class Sender
         };
         var conn = factory.CreateConnection();
         _channel = conn.CreateModel();
-        _channel.ExchangeDeclare("quote-feed", ExchangeType.Fanout, false, true, null);
+        _channel.ExchangeDeclare("quote-feed", ExchangeType.Fanout, true, false, null);
 
         _properties = _channel.CreateBasicProperties();
         _properties.Persistent = false;
