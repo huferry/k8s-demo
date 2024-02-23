@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: quotes-view-service
+spec:
+  selector:
+    app: quoteview
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: quote-view-port
+  type: NodePort   

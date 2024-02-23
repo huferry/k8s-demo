@@ -1,20 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: quotefeeder-deployment
+  name: quoteview-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
-      app: quotefeeder
+      app: quoteview
   template:
     metadata:
       labels:
-        app: quotefeeder
+        app: quoteview
     spec:
       containers:
-      - name: quotefeeder-container
-        image: huferry/quote-feeder:3
+      - name: quoteview-container
+        image: huferry/quote-view:5
+        ports:
+        - name: quote-view-port
+          containerPort: 80
         env:
         - name: QUEUE_HOST
           value: quotes-amqp-service
@@ -28,3 +31,4 @@ spec:
             secretKeyRef:
               name: quotes-secrets
               key: RABBITMQ_DEFAULT_PASS
+           
