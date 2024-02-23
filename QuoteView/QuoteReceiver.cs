@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.SignalR;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -35,9 +36,15 @@ public class QuoteReceiver
             HostName = _queueConfig.HostName,
             UserName = _queueConfig.UserName,
             Password = _queueConfig.Password,
+            RequestedConnectionTimeout = TimeSpan.FromSeconds(10),
         };
-
-        var connection = factory.CreateConnection();
+        
+        var connection = Policy<IConnection>
+            .Handle<Exception>()
+            .WaitAndRetry(20, 
+                _ => TimeSpan.FromSeconds(10), 
+                (_, _) => _logger.LogWarning("Connection timeout.. retrying"))
+            .Execute(() => factory.CreateConnection());
 
         var channel = connection.CreateModel();
         
@@ -62,6 +69,18 @@ public class QuoteReceiver
         };
 
         channel.BasicConsume(queue: queueName, autoAck: true, consumer: consumer);
+    }
+
+    private IConnection CreateConnection()
+    {
+        var factory = new ConnectionFactory
+        {
+            HostName = _queueConfig.HostName,
+            UserName = _queueConfig.UserName,
+            Password = _queueConfig.Password,
+        };
+
+        return factory.CreateConnection();
     }
 }
 

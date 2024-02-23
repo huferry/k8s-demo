@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using Polly;
 using RabbitMQ.Client;
 
 namespace QuoteFeeder;
@@ -32,7 +33,14 @@ public class Sender
             UserName = _config.UserName,
             Password = _config.Password,
         };
-        var conn = factory.CreateConnection();
+
+        var conn = Policy<IConnection>
+            .Handle<Exception>()
+            .WaitAndRetry(20, 
+                _ => TimeSpan.FromSeconds(10), 
+                (_, _) => _logger.LogWarning("Connection timeout.. retrying"))
+            .Execute(() => factory.CreateConnection());
+        
         _channel = conn.CreateModel();
         _channel.ExchangeDeclare("quote-feed", ExchangeType.Fanout, true, false, null);
 
