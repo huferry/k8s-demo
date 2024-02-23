@@ -7,7 +7,7 @@ namespace QuoteFeeder;
 public class QueueConfig
 {
     public string HostName => Environment.GetEnvironmentVariable("QUEUE_HOST") ?? "localhost";
-    public string UserName => Environment.GetEnvironmentVariable("QUEUE_USER") ?? "gueest";
+    public string UserName => Environment.GetEnvironmentVariable("QUEUE_USER") ?? "guest";
     public string Password => Environment.GetEnvironmentVariable("QUEUE_PASSWORD") ?? string.Empty;
 }
 

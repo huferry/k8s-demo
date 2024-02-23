@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<QuoteReceiver>();
+builder.Services.AddSingleton<QueueConfig, QueueConfig>();
 
 var app = builder.Build();
 

@@ -7,24 +7,34 @@ using RabbitMQ.Client.Events;
 
 namespace QuoteView;
 
+public class QueueConfig
+{
+    public string HostName => Environment.GetEnvironmentVariable("QUEUE_HOST") ?? "localhost";
+    public string UserName => Environment.GetEnvironmentVariable("QUEUE_USER") ?? "guest";
+    public string Password => Environment.GetEnvironmentVariable("QUEUE_PASSWORD") ?? string.Empty;
+}
+
+
 public class QuoteReceiver
 {
     private readonly IHubContext<QuotesHub> _hubContext;
     private readonly ILogger<QuoteReceiver> _logger;
+    private readonly QueueConfig _queueConfig;
 
-    public QuoteReceiver(IHubContext<QuotesHub> hubContext, ILogger<QuoteReceiver> logger)
+    public QuoteReceiver(IHubContext<QuotesHub> hubContext, ILogger<QuoteReceiver> logger, QueueConfig queueConfig)
     {
         _hubContext = hubContext;
         _logger = logger;
+        _queueConfig = queueConfig;
     }
     
     public void Setup()
     {
         var factory = new ConnectionFactory
         {
-            HostName = "localhost",
-            UserName = "queue-user",
-            Password = "ToPSecreT"
+            HostName = _queueConfig.HostName,
+            UserName = _queueConfig.UserName,
+            Password = _queueConfig.Password,
         };
 
         var connection = factory.CreateConnection();
