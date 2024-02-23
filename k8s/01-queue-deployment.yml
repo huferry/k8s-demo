@@ -12,7 +12,7 @@ spec:
       labels:
         app: rabbitmq
     spec:
-      containers:      
+      containers:
       - name: rabbitmq-container
         image: rabbitmq:3-management
         ports:
@@ -22,6 +22,12 @@ spec:
           containerPort: 15672
         env:
         - name: RABBITMQ_DEFAULT_USER
-          value: quotes.user
+          valueFrom:
+            secretKeyRef:
+              name: quotes-secrets
+              key: RABBITMQ_DEFAULT_USER
         - name: RABBITMQ_DEFAULT_PASS
-          value: $3cret
+          valueFrom:
+            secretKeyRef:
+              name: quotes-secrets
+              key: RABBITMQ_DEFAULT_PASS

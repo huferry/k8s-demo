@@ -19,6 +19,12 @@ spec:
         - name: QUEUE_HOST
           value: quotes-amqp-service
         - name: QUEUE_USER
-          value: quotes.user
+          valueFrom:
+            secretKeyRef:
+              name: quotes-secrets
+              key: RABBITMQ_DEFAULT_USER
         - name: QUEUE_PASSWORD
-          value: $3cret
+          valueFrom:
+            secretKeyRef:
+              name: quotes-secrets
+              key: RABBITMQ_DEFAULT_PASS

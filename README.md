@@ -23,6 +23,20 @@ Make sure you have the `minikube` started.
 minikube start
 ```
 
+**Create The Secrets**
+For RabbitMQ, the credentials are:
+- username: quotes.user
+- password: ToP$3cret!
+  
+How we get the base64 encoding:
+```
+echo -n "your secret" | base64
+```
+Create the secrets on kubernetes:
+```
+kubectl create -f ./k8s/00-secrets.yml
+```
+
 **Create deployment**
 First create the RabbitMQ instance. After the deployment is created, an instance of RabbitMQ will run in a pod. This will not available from outside the pod until a service is created.
 ```
@@ -58,6 +72,7 @@ kubectl create -f ./k8s/03-feeder-deployment.yml
 kubectl delete deployment quotefeeder-deployment
 kubectl delete service quotes-amqp-service
 kubectl delete deployment quotes-amqp-deployment
+kubectl delete secret quotes-secrets
 ```
 
 
