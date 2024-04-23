@@ -75,11 +75,37 @@ If the feeder is running, the viewer can be deployed.
 kubectl create -f ./k8s/04-view-deployment.yml
 ```
 
+**Create the service for the viewer app**
+Run this command to create the service:
+```
+kubectl create -f ./k8s/05-view-service.yml
+```
+
 **Open the viewer on the browser**
 Run `minikube service` to expose the URL, then navigate to the URL.
 ```
 minikube service quotes-view-service --url
 ```
+
+**Using Ingress**
+Enable Ingress addon on `minikube`:
+```
+minikube addons enable ingress
+```
+Add the Ingress object:
+```
+kubectl create -f ./k8s/06-ingress.yml
+```
+Create tunnel in `minikube`
+```
+minikube tunnel
+```
+Add this line to `/etc/hosts`:
+```
+127.0.0.1 quotesview.demo
+```
+Naviagate the browser to http://quotesview.demo
+
 
 **Cleanups**
 ```
