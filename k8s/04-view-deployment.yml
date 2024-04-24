@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: quoteview-container
-        image: huferry/quote-view:1
+        image: huferry/quote-view:8
         ports:
         - name: quote-view-port
           containerPort: 80
