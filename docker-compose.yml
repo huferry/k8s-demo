@@ -19,7 +19,7 @@ services:
       QUEUE_PASSWORD: ToPSecreT
 
   quoteview:
-    image: huferry/quote-view:1
+    image: huferry/quote-view:8
     depends_on:
       - rabbitmq
     ports:

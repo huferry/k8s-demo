@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuotesView2", "QuotesView2\QuotesView2.csproj", "{FD82EDCB-DA1F-4F94-892B-7761EB759EDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD82EDCB-DA1F-4F94-892B-7761EB759EDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD82EDCB-DA1F-4F94-892B-7761EB759EDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD82EDCB-DA1F-4F94-892B-7761EB759EDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD82EDCB-DA1F-4F94-892B-7761EB759EDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
