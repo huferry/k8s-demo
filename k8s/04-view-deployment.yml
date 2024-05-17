@@ -31,4 +31,15 @@ spec:
             secretKeyRef:
               name: quotes-secrets
               key: RABBITMQ_DEFAULT_PASS
-           
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 10            
