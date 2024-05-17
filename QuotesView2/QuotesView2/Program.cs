@@ -19,4 +19,5 @@ app.UseCors();
 app.MapControllers();
 app.MapHub<QuotesHub>("stream");
 app.Services.GetService<QuoteReceiver>()?.Setup();
+app.MapGet("/health", () => "I'm healty!");
 app.Run();
